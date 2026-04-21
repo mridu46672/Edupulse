@@ -1,0 +1,428 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  .page{
+    min-height:100vh;
+    display:flex;
+    font-family:'DM Sans',sans-serif;
+    background:var(--color-background-tertiary);
+  }
+
+  .left-panel{
+    width:420px;
+    flex-shrink:0;
+    background:#412402;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:2.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .lp-top{display:flex;align-items:center;gap:12px;}
+  .logo-mark{width:42px;height:42px;border-radius:12px;background:#EF9F27;display:flex;align-items:center;justify-content:center;}
+  .logo-mark svg{width:24px;height:24px;}
+  .brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;letter-spacing:-0.3px;}
+  .brand-sub{font-size:11px;color:#FAC775;opacity:0.8;letter-spacing:0.5px;text-transform:uppercase;margin-top:1px;}
+
+  .lp-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.5rem;padding:2rem 0;}
+
+  .shield-wrap{width:80px;height:80px;border-radius:20px;background:rgba(239,159,39,0.15);border:0.5px solid rgba(239,159,39,0.3);display:flex;align-items:center;justify-content:center;}
+  .shield-wrap svg{width:44px;height:44px;}
+
+  .lp-heading{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;color:#fff;line-height:1.3;}
+  .lp-desc{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:300px;}
+
+  .zone-badges{display:flex;flex-direction:column;gap:8px;margin-top:0.5rem;}
+  .zone-badge{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:10px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(239,159,39,0.2);}
+  .zb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .zb-green{background:#639922;}
+  .zb-amber{background:#EF9F27;}
+  .zb-red{background:#E24B4A;}
+  .zb-text{font-size:12px;color:rgba(255,255,255,0.7);}
+  .zb-status{margin-left:auto;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;}
+  .zbs-secure{background:rgba(99,153,34,0.2);color:#97C459;}
+  .zbs-alert{background:rgba(226,75,74,0.2);color:#F09595;}
+  .zbs-patrol{background:rgba(239,159,39,0.2);color:#FAC775;}
+
+  .lp-bottom{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.3px;}
+
+  .deco-circle-1{position:absolute;width:280px;height:280px;border-radius:50%;border:0.5px solid rgba(239,159,39,0.08);top:-80px;right:-80px;pointer-events:none;}
+  .deco-circle-2{position:absolute;width:180px;height:180px;border-radius:50%;border:0.5px solid rgba(239,159,39,0.06);top:-30px;right:-30px;pointer-events:none;}
+  .deco-circle-3{position:absolute;width:200px;height:200px;border-radius:50%;border:0.5px solid rgba(239,159,39,0.07);bottom:-60px;left:-60px;pointer-events:none;}
+
+  .right-panel{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2rem;
+  }
+
+  .form-box{width:100%;max-width:400px;display:flex;flex-direction:column;gap:0;}
+
+  .form-header{margin-bottom:2rem;}
+  .form-title{font-size:22px;font-weight:500;color:var(--color-text-primary);}
+  .form-sub{font-size:13px;color:var(--color-text-secondary);margin-top:4px;}
+
+  .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:2rem;}
+  .step{display:flex;align-items:center;gap:6px;font-size:12px;}
+  .step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+  .step-active .step-num{background:#BA7517;color:#fff;}
+  .step-done .step-num{background:#639922;color:#fff;}
+  .step-idle .step-num{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);}
+  .step-label{color:var(--color-text-secondary);}
+  .step-active .step-label{color:var(--color-text-primary);font-weight:500;}
+  .step-connector{flex:1;height:0.5px;background:var(--color-border-tertiary);}
+
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  label{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.5px;text-transform:uppercase;}
+  .input-wrap{position:relative;display:flex;align-items:center;}
+  .input-wrap .ico{position:absolute;left:11px;width:15px;height:15px;color:var(--color-text-secondary);opacity:0.65;pointer-events:none;}
+  .eye-btn{position:absolute;right:11px;background:none;border:none;cursor:pointer;opacity:0.45;transition:opacity 0.15s;padding:0;display:flex;align-items:center;color:var(--color-text-secondary);}
+  .eye-btn:hover{opacity:1;}
+
+  input[type=text],input[type=email],input[type=password],input[type=tel]{
+    width:100%;height:42px;
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:var(--border-radius-md);
+    background:var(--color-background-primary);
+    color:var(--color-text-primary);
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;padding:0 38px 0 36px;
+    outline:none;transition:border-color 0.15s;
+  }
+  input:focus{border-color:#EF9F27;box-shadow:0 0 0 3px rgba(239,159,39,0.12);}
+
+  .pin-row{display:flex;gap:10px;justify-content:space-between;}
+  .pin-box{
+    width:52px;height:56px;
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:var(--border-radius-md);
+    background:var(--color-background-primary);
+    color:var(--color-text-primary);
+    font-family:'DM Sans',sans-serif;
+    font-size:22px;font-weight:500;
+    text-align:center;outline:none;
+    transition:border-color 0.15s;
+    caret-color:transparent;
+  }
+  .pin-box:focus{border-color:#EF9F27;box-shadow:0 0 0 3px rgba(239,159,39,0.12);}
+
+  .row-between{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;margin-top:4px;}
+  .remember-wrap{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;}
+  .custom-check{width:16px;height:16px;border:1.5px solid var(--color-border-secondary);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:var(--color-background-primary);flex-shrink:0;}
+  .custom-check.on{background:#BA7517;border-color:#BA7517;}
+  .remember-label{font-size:13px;color:var(--color-text-secondary);}
+  .forgot-link{font-size:13px;color:#BA7517;text-decoration:none;font-weight:500;}
+
+  .submit-btn{
+    width:100%;height:44px;
+    background:#BA7517;color:#fff;
+    border:none;border-radius:var(--border-radius-md);
+    font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;
+    cursor:pointer;letter-spacing:0.2px;
+    transition:background 0.15s,transform 0.1s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .submit-btn:hover{background:#854F0B;}
+  .submit-btn:active{transform:scale(0.99);}
+
+  .back-btn{
+    width:100%;height:40px;margin-top:8px;
+    background:transparent;color:var(--color-text-secondary);
+    border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);
+    font-family:'DM Sans',sans-serif;font-size:14px;
+    cursor:pointer;transition:background 0.15s;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .back-btn:hover{background:var(--color-background-secondary);}
+
+  .info-box{
+    background:#FAEEDA;border:0.5px solid #EF9F27;
+    border-radius:var(--border-radius-md);
+    padding:10px 14px;font-size:12px;color:#633806;
+    display:flex;gap:9px;align-items:flex-start;margin-bottom:1.25rem;
+  }
+  .info-box svg{flex-shrink:0;margin-top:1px;color:#BA7517;}
+
+  .error-msg{
+    display:none;background:#FCEBEB;border:0.5px solid #F09595;
+    color:#791F1F;border-radius:var(--border-radius-md);
+    padding:10px 14px;font-size:13px;margin-bottom:14px;
+    align-items:center;gap:8px;
+  }
+  .error-msg.show{display:flex;}
+
+  .divider-row{display:flex;align-items:center;gap:10px;margin:1.25rem 0;}
+  .divider-line{flex:1;height:0.5px;background:var(--color-border-tertiary);}
+  .divider-text{font-size:12px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.3px;}
+
+  .sso-btn{
+    width:100%;height:40px;
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:var(--border-radius-md);
+    background:var(--color-background-primary);
+    color:var(--color-text-primary);
+    font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    transition:background 0.15s;
+  }
+  .sso-btn:hover{background:var(--color-background-secondary);}
+
+  .contact-row{text-align:center;margin-top:1.25rem;font-size:13px;color:var(--color-text-secondary);}
+  .contact-row a{color:#BA7517;text-decoration:none;font-weight:500;}
+
+  .step1,.step2{display:none;}
+  .step1.active,.step2.active{display:block;}
+
+  @media(max-width:700px){
+    .page{flex-direction:column;}
+    .left-panel{width:100%;padding:1.5rem;}
+    .lp-mid{padding:1.5rem 0;gap:1rem;}
+    .zone-badges{display:none;}
+    .right-panel{padding:1.5rem;}
+  }
+</style>
+
+<div class="page">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">EduPulse security personnel login</h2>
+
+  <div class="left-panel">
+    <div class="deco-circle-1"></div>
+    <div class="deco-circle-2"></div>
+    <div class="deco-circle-3"></div>
+
+    <div class="lp-top">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6L12 2z" fill="white" opacity="0.9"/>
+          <path d="M9 12l2 2 4-4" stroke="#412402" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">EduPulse</div>
+        <div class="brand-sub">Security Portal</div>
+      </div>
+    </div>
+
+    <div class="lp-mid">
+      <div class="shield-wrap">
+        <svg viewBox="0 0 48 48" fill="none">
+          <path d="M24 4L8 12v12c0 10.5 7 20.3 16 22.7C33 44.3 40 34.5 40 24V12L24 4z" fill="#EF9F27" opacity="0.25"/>
+          <path d="M24 4L8 12v12c0 10.5 7 20.3 16 22.7C33 44.3 40 34.5 40 24V12L24 4z" stroke="#EF9F27" stroke-width="1.5"/>
+          <path d="M18 24l4 4 8-8" stroke="#FAC775" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="lp-heading">Campus security access portal</div>
+        <div class="lp-desc" style="margin-top:10px;">Sign in with your badge ID and PIN to access your shift dashboard, incident log, and gate controls.</div>
+      </div>
+      <div class="zone-badges">
+        <div class="zone-badge">
+          <div class="zb-dot zb-green"></div>
+          <span class="zb-text">Zone A — Main Gate</span>
+          <span class="zb-status zbs-secure">Secure</span>
+        </div>
+        <div class="zone-badge">
+          <div class="zb-dot zb-red"></div>
+          <span class="zb-text">Zone B — Parking Lot</span>
+          <span class="zb-status zbs-alert">Alert</span>
+        </div>
+        <div class="zone-badge">
+          <div class="zb-dot zb-amber"></div>
+          <span class="zb-text">Zone C — Library</span>
+          <span class="zb-status zbs-patrol">On patrol</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-bottom">EduPulse © 2026 · Authorized personnel only</div>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-box">
+
+      <div class="form-header">
+        <div class="form-title">Sign in</div>
+        <div class="form-sub">Security personnel — authorized access only</div>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step step-active" id="si1">
+          <div class="step-num">1</div>
+          <span class="step-label">Credentials</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step step-idle" id="si2">
+          <div class="step-num">2</div>
+          <span class="step-label">PIN verify</span>
+        </div>
+      </div>
+
+      <div class="step1 active" id="step1">
+        <div class="info-box">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7v4M8 5.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Use your university-issued security badge ID and registered email to proceed.
+        </div>
+
+        <div class="error-msg" id="err1">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#A32D2D" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Badge ID or email not found. Please check and try again.
+        </div>
+
+        <div class="field">
+          <label>Security badge ID</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 11c0-1.38 1.12-2 2.5-2s2.5.62 2.5 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <input type="text" id="badgeId" placeholder="e.g. SEC-2024-042" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Registered email</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 5.5l6 4 6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="email" id="emailInput" placeholder="you@university.edu" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Shift zone</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M8 2v1M8 12v1M2 7h1M12 7h1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 13.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="text" id="shiftZone" placeholder="e.g. Zone A — Main Gate" />
+          </div>
+        </div>
+
+        <button class="submit-btn" style="margin-top:6px;" onclick="goStep2()">
+          Continue
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="divider-row"><div class="divider-line"></div><div class="divider-text">or</div><div class="divider-line"></div></div>
+
+        <button class="sso-btn" onclick="alert('SSO login (demo)')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5.5" height="5.5" rx="1" fill="#BA7517"/><rect x="8.5" y="2" width="5.5" height="5.5" rx="1" fill="#BA7517" opacity="0.6"/><rect x="2" y="8.5" width="5.5" height="5.5" rx="1" fill="#BA7517" opacity="0.6"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" fill="#BA7517" opacity="0.3"/></svg>
+          Continue with campus SSO
+        </button>
+
+        <div class="contact-row">Need access? <a href="#">Contact your supervisor</a></div>
+      </div>
+
+      <div class="step2" id="step2">
+        <div class="info-box">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2 4.5v4c0 4 2.5 7.5 6 8.5 3.5-1 6-4.5 6-8.5v-4L8 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M6 8l1.5 1.5 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Enter your 6-digit security PIN. This PIN is assigned during onboarding.
+        </div>
+
+        <div class="error-msg" id="err2">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#A32D2D" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Incorrect PIN. Please try again. 2 attempts remaining.
+        </div>
+
+        <div class="field">
+          <label>6-digit access PIN</label>
+          <div class="pin-row" id="pinRow"></div>
+        </div>
+
+        <div class="row-between" style="margin-top:10px;">
+          <div class="remember-wrap" onclick="toggleCheck()">
+            <div class="custom-check" id="chkBox"></div>
+            <span class="remember-label">Keep me signed in</span>
+          </div>
+          <a href="#" class="forgot-link">Forgot PIN?</a>
+        </div>
+
+        <button class="submit-btn" onclick="handleLogin()">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2 4.5v4c0 4 2.5 7.5 6 8.5 3.5-1 6-4.5 6-8.5v-4L8 1.5z" stroke="white" stroke-width="1.4"/><path d="M6 8l1.5 1.5 3-3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Access security portal
+        </button>
+
+        <button class="back-btn" onclick="goStep1()">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to credentials
+        </button>
+
+        <div class="contact-row" style="margin-top:1rem;">Trouble signing in? <a href="#">Contact IT support</a></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let checked = false;
+  let pinVals = ['','','','','',''];
+
+  function buildPinBoxes(){
+    const row = document.getElementById('pinRow');
+    row.innerHTML = '';
+    for(let i=0;i<6;i++){
+      const inp = document.createElement('input');
+      inp.type = 'password';
+      inp.maxLength = 1;
+      inp.className = 'pin-box';
+      inp.inputMode = 'numeric';
+      inp.dataset.idx = i;
+      inp.addEventListener('input', e => {
+        const v = e.target.value.replace(/\D/g,'');
+        e.target.value = v;
+        pinVals[i] = v;
+        if(v && i < 5) row.children[i+1].focus();
+      });
+      inp.addEventListener('keydown', e => {
+        if(e.key === 'Backspace' && !e.target.value && i > 0){
+          pinVals[i-1] = '';
+          row.children[i-1].value = '';
+          row.children[i-1].focus();
+        }
+      });
+      row.appendChild(inp);
+    }
+  }
+
+  function goStep2(){
+    const badge = document.getElementById('badgeId').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const err = document.getElementById('err1');
+    if(!badge || !email){err.classList.add('show');return;}
+    err.classList.remove('show');
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('si1').className = 'step step-done';
+    document.getElementById('si1').querySelector('.step-num').innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.getElementById('si2').className = 'step step-active';
+    buildPinBoxes();
+    setTimeout(()=>document.getElementById('pinRow').children[0].focus(),100);
+  }
+
+  function goStep1(){
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('si1').className = 'step step-active';
+    document.getElementById('si1').querySelector('.step-num').textContent = '1';
+    document.getElementById('si2').className = 'step step-idle';
+    document.getElementById('err2').classList.remove('show');
+  }
+
+  function toggleCheck(){
+    checked = !checked;
+    const box = document.getElementById('chkBox');
+    box.className = 'custom-check' + (checked ? ' on' : '');
+    box.innerHTML = checked ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '';
+  }
+
+  function handleLogin(){
+    const pin = pinVals.join('');
+    const err = document.getElementById('err2');
+    if(pin.length < 6){err.classList.add('show');return;}
+    err.classList.remove('show');
+    alert('Welcome, Officer! Access granted. (Demo only)');
+  }
+
+  buildPinBoxes();
+</script>
