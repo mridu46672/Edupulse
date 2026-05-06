@@ -1,0 +1,421 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body,div,span,p,h1,h2,h3,label,button,input,select,td,th{font-family:'DM Sans',sans-serif;}
+
+  .shell{background:var(--color-background-tertiary);min-height:100vh;display:flex;flex-direction:column;}
+
+  .topbar{background:#412402;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:54px;flex-shrink:0;}
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .logo-mark{width:32px;height:32px;border-radius:8px;background:#EF9F27;display:flex;align-items:center;justify-content:center;}
+  .logo-mark svg{width:18px;height:18px;}
+  .brand{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:#fff;}
+  .role-pill{background:rgba(239,159,39,0.25);border:0.5px solid rgba(239,159,39,0.5);color:#FAC775;font-size:11px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+  .topbar-right{display:flex;align-items:center;gap:14px;}
+  .officer-info{text-align:right;}
+  .officer-name{font-size:13px;font-weight:500;color:#fff;}
+  .officer-shift{font-size:11px;color:#FAC775;opacity:0.8;}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#EF9F27;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#412402;}
+  .notif-btn{width:32px;height:32px;border-radius:8px;border:0.5px solid rgba(239,159,39,0.3);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+  .notif-btn svg{width:16px;height:16px;color:#FAC775;}
+  .notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#E24B4A;border:1.5px solid #412402;}
+
+  .main{display:grid;grid-template-columns:220px 1fr;flex:1;min-height:0;}
+
+  .sidebar{background:var(--color-background-primary);border-right:0.5px solid var(--color-border-tertiary);padding:1.25rem 0;}
+  .sidebar-section{margin-bottom:1.5rem;}
+  .sidebar-label{font-size:10px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;color:var(--color-text-secondary);padding:0 1.25rem;margin-bottom:6px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 1.25rem;font-size:13px;color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;}
+  .nav-item svg{width:15px;height:15px;flex-shrink:0;}
+  .nav-item:hover{background:var(--color-background-secondary);color:var(--color-text-primary);}
+  .nav-item.active{background:#FAEEDA;color:#633806;border-left-color:#EF9F27;font-weight:500;}
+  .nav-item.active svg{color:#BA7517;}
+
+  .content{padding:1.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.25rem;}
+
+  .page-header{display:flex;align-items:center;justify-content:space-between;}
+  .page-title{font-size:18px;font-weight:500;color:var(--color-text-primary);}
+  .page-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px;}
+  .header-actions{display:flex;gap:8px;}
+  .btn-outline{padding:7px 14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .btn-amber{padding:7px 14px;border:none;border-radius:var(--border-radius-md);background:#BA7517;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .btn-amber:hover{background:#854F0B;}
+
+  .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+  .metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;}
+  .metric-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:6px;}
+  .metric-val{font-size:22px;font-weight:500;color:var(--color-text-primary);}
+  .metric-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;margin-top:4px;padding:2px 8px;border-radius:20px;}
+  .badge-warn{background:#FAEEDA;color:#633806;}
+  .badge-ok{background:#EAF3DE;color:#27500A;}
+  .badge-red{background:#FCEBEB;color:#791F1F;}
+  .badge-gray{background:var(--color-background-primary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);}
+
+  .two-col{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;}
+
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;}
+  .card-head{padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;}
+  .card-title{font-size:14px;font-weight:500;color:var(--color-text-primary);}
+  .card-body{padding:1rem 1.25rem;}
+
+  .incident-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .incident-table th{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-text-secondary);padding:0 0 10px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);}
+  .incident-table td{padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:middle;}
+  .incident-table tr:last-child td{border-bottom:none;}
+  .sev-pill{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;}
+  .sev-high{background:#FCEBEB;color:#791F1F;}
+  .sev-med{background:#FAEEDA;color:#633806;}
+  .sev-low{background:#EAF3DE;color:#27500A;}
+  .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;}
+  .dot-open{background:#E24B4A;}
+  .dot-inprog{background:#EF9F27;}
+  .dot-closed{background:#639922;}
+
+  .zone-list{display:flex;flex-direction:column;gap:10px;}
+  .zone-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);}
+  .zone-name{font-size:13px;font-weight:500;color:var(--color-text-primary);}
+  .zone-officer{font-size:11px;color:var(--color-text-secondary);margin-top:1px;}
+  .zone-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;}
+  .zs-secure{background:#EAF3DE;color:#27500A;}
+  .zs-alert{background:#FCEBEB;color:#791F1F;}
+  .zs-patrol{background:#FAEEDA;color:#633806;}
+
+  .gate-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .gate-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;}
+  .gate-name{font-size:12px;font-weight:500;color:var(--color-text-primary);}
+  .gate-state{font-size:11px;margin:3px 0 8px;}
+  .gate-open-txt{color:#639922;}
+  .gate-closed-txt{color:#E24B4A;}
+  .gate-toggle{width:100%;padding:5px 0;border-radius:6px;font-size:12px;cursor:pointer;border:0.5px solid;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s;}
+  .toggle-open{background:#EAF3DE;border-color:#97C459;color:#27500A;}
+  .toggle-close{background:#FCEBEB;border-color:#F09595;color:#791F1F;}
+
+  .activity-list{display:flex;flex-direction:column;gap:0;}
+  .activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+  .activity-item:last-child{border-bottom:none;}
+  .act-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;padding-top:3px;}
+  .act-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .act-amber{background:#EF9F27;}
+  .act-red{background:#E24B4A;}
+  .act-green{background:#639922;}
+  .act-gray{background:#B4B2A9;}
+  .act-text{font-size:13px;color:var(--color-text-primary);line-height:1.4;}
+  .act-time{font-size:11px;color:var(--color-text-secondary);margin-top:2px;}
+
+  .alert-banner{background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:var(--border-radius-md);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+  .alert-banner svg{flex-shrink:0;color:#BA7517;}
+  .alert-text{font-size:13px;color:#633806;}
+  .alert-time{font-size:11px;color:#854F0B;margin-top:1px;}
+
+  @media(max-width:700px){
+    .main{grid-template-columns:1fr;}
+    .sidebar{display:none;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .two-col{grid-template-columns:1fr;}
+  }
+</style>
+
+<div class="shell">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">EduPulse security personnel dashboard</h2>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6L12 2z" fill="white" opacity="0.9"/>
+          <path d="M9 12l2 2 4-4" stroke="#412402" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand">EduPulse</span>
+      <span class="role-pill">Security Portal</span>
+    </div>
+    <div class="topbar-right">
+      <div class="notif-btn">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a5 5 0 00-5 5v2.5L2 11h12l-1-1.5V7a5 5 0 00-5-5zM6.5 13a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <div class="notif-dot"></div>
+      </div>
+      <div class="officer-info">
+        <div class="officer-name">Md. Rakibul Islam</div>
+        <div class="officer-shift">Zone A · Morning Shift</div>
+      </div>
+      <div class="avatar">RI</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Main</div>
+        <div class="nav-item active">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+          Overview
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2 4.5v4c0 4 2.5 7.5 6 8.5 3.5-1 6-4.5 6-8.5v-4L8 1.5z" stroke="currentColor" stroke-width="1.3"/></svg>
+          Incidents
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Patrol Log
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Gate Control
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 9a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c0-2.5 2.5-4 5.5-4s5.5 1.5 5.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Visitor Log
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Campus</div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Zone Map
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Reports
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Shift Schedule
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="alert-banner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#BA7517" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#BA7517" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <div>
+          <div class="alert-text">Active alert — Unauthorized access attempt at Library Gate B</div>
+          <div class="alert-time">Reported 4 minutes ago · Assigned to Officer Karim</div>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div>
+          <div class="page-title">Security overview</div>
+          <div class="page-sub">Saturday, 11 April 2026 · Morning shift 06:00 – 14:00</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Export log
+          </button>
+          <button class="btn-amber" onclick="alert('Incident reported! (Demo)')">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Report incident
+          </button>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="metric-label">Active incidents</div>
+          <div class="metric-val">3</div>
+          <span class="metric-badge badge-red">2 high severity</span>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Gates open</div>
+          <div class="metric-val">4 / 6</div>
+          <span class="metric-badge badge-ok">Normal</span>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Officers on duty</div>
+          <div class="metric-val">8</div>
+          <span class="metric-badge badge-gray">All zones covered</span>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Visitors today</div>
+          <div class="metric-val">142</div>
+          <span class="metric-badge badge-warn">+18 from yesterday</span>
+        </div>
+      </div>
+
+      <div class="two-col">
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Incident log</div>
+              <span style="font-size:12px;color:var(--color-text-secondary);">Today</span>
+            </div>
+            <div class="card-body" style="padding:0 1.25rem;">
+              <table class="incident-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Zone</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="color:var(--color-text-secondary);font-size:12px;">#INC-041</td>
+                    <td>Unauthorized access — Library Gate B</td>
+                    <td style="color:var(--color-text-secondary);">Zone C</td>
+                    <td><span class="sev-pill sev-high">High</span></td>
+                    <td><span class="status-dot dot-open"></span>Open</td>
+                  </tr>
+                  <tr>
+                    <td style="color:var(--color-text-secondary);font-size:12px;">#INC-040</td>
+                    <td>Suspicious vehicle — Parking Lot 2</td>
+                    <td style="color:var(--color-text-secondary);">Zone B</td>
+                    <td><span class="sev-pill sev-high">High</span></td>
+                    <td><span class="status-dot dot-inprog"></span>In progress</td>
+                  </tr>
+                  <tr>
+                    <td style="color:var(--color-text-secondary);font-size:12px;">#INC-039</td>
+                    <td>Lost student ID — Admin Block</td>
+                    <td style="color:var(--color-text-secondary);">Zone A</td>
+                    <td><span class="sev-pill sev-low">Low</span></td>
+                    <td><span class="status-dot dot-inprog"></span>In progress</td>
+                  </tr>
+                  <tr>
+                    <td style="color:var(--color-text-secondary);font-size:12px;">#INC-038</td>
+                    <td>Broken CCTV camera — Cafeteria</td>
+                    <td style="color:var(--color-text-secondary);">Zone D</td>
+                    <td><span class="sev-pill sev-med">Medium</span></td>
+                    <td><span class="status-dot dot-closed"></span>Resolved</td>
+                  </tr>
+                  <tr>
+                    <td style="color:var(--color-text-secondary);font-size:12px;">#INC-037</td>
+                    <td>Visitor without badge — Lab Block</td>
+                    <td style="color:var(--color-text-secondary);">Zone C</td>
+                    <td><span class="sev-pill sev-med">Medium</span></td>
+                    <td><span class="status-dot dot-closed"></span>Resolved</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Gate control</div>
+              <span style="font-size:12px;color:var(--color-text-secondary);">Click to toggle</span>
+            </div>
+            <div class="card-body">
+              <div class="gate-grid" id="gateGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Patrol zones</div>
+            </div>
+            <div class="card-body">
+              <div class="zone-list">
+                <div class="zone-row">
+                  <div>
+                    <div class="zone-name">Zone A — Main Gate</div>
+                    <div class="zone-officer">Officer Rakibul Islam</div>
+                  </div>
+                  <span class="zone-status zs-secure">Secure</span>
+                </div>
+                <div class="zone-row" style="border-color:#F09595;">
+                  <div>
+                    <div class="zone-name">Zone B — Parking Lot</div>
+                    <div class="zone-officer">Officer Nasrin Begum</div>
+                  </div>
+                  <span class="zone-status zs-alert">Alert</span>
+                </div>
+                <div class="zone-row" style="border-color:#F09595;">
+                  <div>
+                    <div class="zone-name">Zone C — Library</div>
+                    <div class="zone-officer">Officer Karim Uddin</div>
+                  </div>
+                  <span class="zone-status zs-alert">Alert</span>
+                </div>
+                <div class="zone-row">
+                  <div>
+                    <div class="zone-name">Zone D — Cafeteria</div>
+                    <div class="zone-officer">Officer Sumi Akter</div>
+                  </div>
+                  <span class="zone-status zs-patrol">On patrol</span>
+                </div>
+                <div class="zone-row">
+                  <div>
+                    <div class="zone-name">Zone E — Lab Block</div>
+                    <div class="zone-officer">Officer Hasan Mahmud</div>
+                  </div>
+                  <span class="zone-status zs-secure">Secure</span>
+                </div>
+                <div class="zone-row">
+                  <div>
+                    <div class="zone-name">Zone F — Dormitory</div>
+                    <div class="zone-officer">Officer Farida Khanam</div>
+                  </div>
+                  <span class="zone-status zs-secure">Secure</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Recent activity</div>
+            </div>
+            <div class="card-body" style="padding:0 1.25rem;">
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="act-dot-wrap"><div class="act-dot act-red"></div></div>
+                  <div><div class="act-text">Unauthorized access alert triggered at Library Gate B</div><div class="act-time">08:41 AM · Auto-detected</div></div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-dot-wrap"><div class="act-dot act-amber"></div></div>
+                  <div><div class="act-text">Gate 3 (Science Block) manually closed by Officer Karim</div><div class="act-time">08:30 AM</div></div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-dot-wrap"><div class="act-dot act-green"></div></div>
+                  <div><div class="act-text">Incident #INC-038 resolved — CCTV maintenance complete</div><div class="act-time">07:55 AM</div></div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-dot-wrap"><div class="act-dot act-gray"></div></div>
+                  <div><div class="act-text">Morning shift check-in completed — 8 officers on duty</div><div class="act-time">06:05 AM</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const gates = [
+    {name:'Main Gate', open:true},
+    {name:'Science Block', open:false},
+    {name:'Library Gate A', open:true},
+    {name:'Library Gate B', open:false},
+    {name:'Admin Block', open:true},
+    {name:'Cafeteria', open:true},
+  ];
+
+  function renderGates(){
+    const grid = document.getElementById('gateGrid');
+    grid.innerHTML = gates.map((g,i) => `
+      <div class="gate-card">
+        <div class="gate-name">${g.name}</div>
+        <div class="gate-state ${g.open ? 'gate-open-txt' : 'gate-closed-txt'}">${g.open ? 'Open' : 'Closed'}</div>
+        <button class="gate-toggle ${g.open ? 'toggle-close' : 'toggle-open'}" onclick="toggleGate(${i})">${g.open ? 'Close gate' : 'Open gate'}</button>
+      </div>
+    `).join('');
+  }
+
+  function toggleGate(i){
+    gates[i].open = !gates[i].open;
+    renderGates();
+  }
+
+  renderGates();
+</script>
