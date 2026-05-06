@@ -1,0 +1,524 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  .shell{font-family:'DM Sans',sans-serif;background:var(--color-background-tertiary);min-height:100vh;display:flex;flex-direction:column;}
+
+  .topbar{background:#1a1a2e;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:54px;flex-shrink:0;}
+  .tb-left{display:flex;align-items:center;gap:12px;}
+  .logo-m{width:32px;height:32px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;}
+  .logo-m svg{width:18px;height:18px;}
+  .brand{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:#fff;}
+  .portal-pill{background:rgba(29,158,117,0.25);border:0.5px solid rgba(29,158,117,0.5);color:#9FE1CB;font-size:11px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+  .tb-right{display:flex;align-items:center;gap:10px;}
+  .tb-step{font-size:12px;color:rgba(255,255,255,0.45);}
+
+  .content{flex:1;padding:1.5rem;display:grid;grid-template-columns:320px 1fr;gap:1.25rem;}
+
+  .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
+
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;}
+  .card-head{padding:.875rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;}
+  .card-title{font-size:14px;font-weight:500;color:var(--color-text-primary);}
+  .card-body{padding:1.25rem;}
+
+  .step-list{display:flex;flex-direction:column;gap:0;}
+  .step-item{display:flex;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;align-items:flex-start;}
+  .step-item:last-child{border-bottom:none;padding-bottom:0;}
+  .step-item:first-child{padding-top:0;}
+  .step-num-wrap{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;}
+  .step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;transition:all 0.2s;}
+  .sc-done{background:#1D9E75;color:#fff;}
+  .sc-active{background:#534AB7;color:#fff;}
+  .sc-idle{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);}
+  .step-conn{width:1px;flex:1;min-height:16px;background:var(--color-border-tertiary);margin:4px 0;}
+  .step-info{flex:1;padding-top:4px;}
+  .step-label{font-size:13px;font-weight:500;color:var(--color-text-primary);}
+  .step-label.idle{color:var(--color-text-secondary);}
+  .step-desc{font-size:12px;color:var(--color-text-secondary);margin-top:2px;line-height:1.5;}
+
+  .user-profile{display:flex;align-items:center;gap:12px;}
+  .user-avatar{width:44px;height:44px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:#3C3489;flex-shrink:0;}
+  .user-name{font-size:14px;font-weight:500;color:var(--color-text-primary);}
+  .user-meta{font-size:12px;color:var(--color-text-secondary);margin-top:2px;}
+  .user-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:20px;margin-top:4px;}
+  .ub-pending{background:#FAEEDA;color:#633806;}
+  .ub-done{background:#EAF3DE;color:#27500A;}
+
+  .tips-list{display:flex;flex-direction:column;gap:8px;}
+  .tip-row{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--color-text-secondary);line-height:1.5;}
+  .tip-dot{width:6px;height:6px;border-radius:50%;background:#1D9E75;flex-shrink:0;margin-top:5px;}
+
+  .main-area{display:flex;flex-direction:column;gap:1.25rem;}
+
+  .cam-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;}
+  .cam-head{padding:.875rem 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;}
+  .cam-status{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;}
+  .cam-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;}
+  .cam-dot.scanning{animation:pulse 1.2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .cam-label{color:var(--color-text-primary);}
+  .cam-actions{display:flex;gap:8px;}
+  .cam-btn{padding:6px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.15s;}
+  .cam-btn:hover{background:var(--color-background-tertiary);}
+  .cam-btn-primary{background:#1D9E75;color:#fff;border-color:#1D9E75;}
+  .cam-btn-primary:hover{background:#0F6E56;}
+
+  .cam-viewport{position:relative;background:#0d0d1a;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .cam-h{height:380px;}
+
+  .face-frame-wrap{position:relative;width:240px;height:280px;display:flex;align-items:center;justify-content:center;}
+
+  .face-oval{position:absolute;width:200px;height:240px;border-radius:50%;border:2.5px solid;transition:border-color 0.3s;}
+  .fo-scanning{border-color:rgba(29,158,117,0.7);}
+  .fo-success{border-color:#1D9E75;}
+  .fo-idle{border-color:rgba(255,255,255,0.25);}
+
+  .scan-line{position:absolute;left:10%;right:10%;height:2px;background:rgba(29,158,117,0.6);border-radius:1px;animation:scanMove 2s linear infinite;}
+  @keyframes scanMove{0%{top:10%;opacity:1;}100%{top:90%;opacity:0.2;}}
+  .scan-line.hidden{display:none;}
+
+  .corner{position:absolute;width:20px;height:20px;}
+  .c-tl{top:0;left:0;border-top:2.5px solid;border-left:2.5px solid;border-radius:4px 0 0 0;}
+  .c-tr{top:0;right:0;border-top:2.5px solid;border-right:2.5px solid;border-radius:0 4px 0 0;}
+  .c-bl{bottom:0;left:0;border-bottom:2.5px solid;border-left:2.5px solid;border-radius:0 0 0 4px;}
+  .c-br{bottom:0;right:0;border-bottom:2.5px solid;border-right:2.5px solid;border-radius:0 0 4px 0;}
+  .corner-scanning{border-color:#1D9E75;}
+  .corner-idle{border-color:rgba(255,255,255,0.3);}
+
+  .face-silhouette{opacity:0.12;}
+
+  .cam-overlay-text{position:absolute;bottom:24px;left:0;right:0;text-align:center;}
+  .cot-main{font-size:14px;font-weight:500;color:#fff;letter-spacing:0.2px;}
+  .cot-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;}
+
+  .face-dots{position:absolute;width:100%;height:100%;}
+
+  .progress-overlay{position:absolute;top:16px;left:0;right:0;display:flex;justify-content:center;}
+  .prog-pill{background:rgba(0,0,0,0.55);border:0.5px solid rgba(29,158,117,0.4);border-radius:20px;padding:5px 14px;display:flex;align-items:center;gap:8px;}
+  .prog-pill-txt{font-size:12px;color:#9FE1CB;font-weight:500;}
+
+  .cam-footer{padding:1rem 1.5rem;border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .capture-strip{display:flex;gap:8px;align-items:center;}
+  .thumb{width:48px;height:48px;border-radius:var(--border-radius-md);border:1.5px solid;display:flex;align-items:center;justify-content:center;font-size:10px;text-align:center;flex-shrink:0;}
+  .th-done{border-color:#1D9E75;background:#E1F5EE;color:#085041;}
+  .th-active{border-color:#534AB7;background:#EEEDFE;color:#3C3489;}
+  .th-idle{border-color:var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-secondary);}
+  .th-label{font-size:9px;margin-top:2px;font-weight:500;}
+
+  .cap-main-btn{padding:10px 28px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s,transform 0.1s;}
+  .cap-main-btn:hover{background:#0F6E56;}
+  .cap-main-btn:active{transform:scale(0.98);}
+  .cap-main-btn:disabled{background:#B4B2A9;cursor:not-allowed;}
+
+  .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+
+  .req-list{display:flex;flex-direction:column;gap:8px;}
+  .req-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--border-radius-md);border:0.5px solid;font-size:13px;}
+  .ri-ok{background:#E1F5EE;border-color:#5DCAA5;color:#085041;}
+  .ri-warn{background:#FAEEDA;border-color:#EF9F27;color:#633806;}
+  .ri-fail{background:#FCEBEB;border-color:#F09595;color:#791F1F;}
+  .ri-idle{background:var(--color-background-secondary);border-color:var(--color-border-tertiary);color:var(--color-text-secondary);}
+  .ri-icon{width:16px;height:16px;flex-shrink:0;}
+
+  .angle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .angle-card{border-radius:var(--border-radius-md);border:0.5px solid;padding:10px 8px;text-align:center;cursor:pointer;transition:all 0.15s;}
+  .ac-done{background:#E1F5EE;border-color:#1D9E75;}
+  .ac-active{background:#EEEDFE;border-color:#534AB7;}
+  .ac-idle{background:var(--color-background-secondary);border-color:var(--color-border-tertiary);}
+  .angle-icon{width:36px;height:36px;margin:0 auto 6px;}
+  .angle-label{font-size:11px;font-weight:500;}
+  .ac-done .angle-label{color:#085041;}
+  .ac-active .angle-label{color:#3C3489;}
+  .ac-idle .angle-label{color:var(--color-text-secondary);}
+  .angle-status{font-size:10px;margin-top:2px;}
+  .ac-done .angle-status{color:#0F6E56;}
+  .ac-active .angle-status{color:#534AB7;}
+  .ac-idle .angle-status{color:var(--color-text-secondary);}
+
+  .confirm-box{background:#E1F5EE;border:0.5px solid #5DCAA5;border-radius:var(--border-radius-md);padding:14px;display:none;align-items:center;gap:12px;margin-top:4px;}
+  .confirm-box.show{display:flex;}
+  .confirm-text{font-size:13px;color:#085041;flex:1;}
+  .confirm-btn{padding:7px 16px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;white-space:nowrap;}
+  .confirm-btn:hover{background:#0F6E56;}
+
+  @media(max-width:800px){
+    .content{grid-template-columns:1fr;}
+    .sidebar{display:none;}
+    .bottom-row{grid-template-columns:1fr;}
+  }
+</style>
+
+<div class="shell">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">EduPulse facial recognition setup — multi-step biometric enrollment UI</h2>
+
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="logo-m">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 3L2 8l10 5 10-5-10-5z" fill="white"/>
+          <path d="M2 16l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M2 12l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+      </div>
+      <span class="brand">EduPulse</span>
+      <span class="portal-pill">Biometric Setup</span>
+    </div>
+    <div class="tb-right">
+      <span class="tb-step" id="topStepLabel">Step 2 of 4 — Face capture</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Setup progress</div></div>
+        <div class="card-body" style="padding:1rem 1.25rem;">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num-wrap">
+                <div class="step-circle sc-done" id="sc1">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3 3 6-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="step-conn"></div>
+              </div>
+              <div class="step-info">
+                <div class="step-label">Identity verification</div>
+                <div class="step-desc">Admin ID &amp; email confirmed</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num-wrap">
+                <div class="step-circle sc-active" id="sc2">2</div>
+                <div class="step-conn"></div>
+              </div>
+              <div class="step-info">
+                <div class="step-label">Face capture</div>
+                <div class="step-desc">Capture front, left &amp; right angles</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num-wrap">
+                <div class="step-circle sc-idle" id="sc3">3</div>
+                <div class="step-conn"></div>
+              </div>
+              <div class="step-info">
+                <div class="step-label idle">Model training</div>
+                <div class="step-desc">AI processes your biometric data</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num-wrap">
+                <div class="step-circle sc-idle" id="sc4">4</div>
+              </div>
+              <div class="step-info">
+                <div class="step-label idle">Confirmation</div>
+                <div class="step-desc">Test recognition &amp; activate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">User profile</div></div>
+        <div class="card-body">
+          <div class="user-profile">
+            <div class="user-avatar">AH</div>
+            <div>
+              <div class="user-name">Aryan Hossain</div>
+              <div class="user-meta">Student · Engineering · SEC-2024-042</div>
+              <div class="user-badge ub-pending">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#BA7517" stroke-width="1.2"/><path d="M6 3.5v3M6 8v.5" stroke="#BA7517" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Biometrics pending
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Capture tips</div></div>
+        <div class="card-body">
+          <div class="tips-list">
+            <div class="tip-row"><div class="tip-dot"></div>Ensure your face is well-lit — avoid backlight</div>
+            <div class="tip-row"><div class="tip-dot"></div>Remove glasses or hats if possible</div>
+            <div class="tip-row"><div class="tip-dot"></div>Keep a neutral expression</div>
+            <div class="tip-row"><div class="tip-dot"></div>Position face within the oval guide</div>
+            <div class="tip-row"><div class="tip-dot"></div>Hold still for 1–2 seconds per angle</div>
+            <div class="tip-row"><div class="tip-dot"></div>All 3 angles are required for enrollment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-area">
+
+      <div class="cam-card">
+        <div class="cam-head">
+          <div class="cam-status">
+            <div class="cam-dot scanning" id="camDot"></div>
+            <span class="cam-label" id="camStatusLabel">Scanning — look straight ahead</span>
+          </div>
+          <div class="cam-actions">
+            <button class="cam-btn" onclick="resetCapture()">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7a5 5 0 109.9-1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M11 3.5L12 6l-2.5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Reset
+            </button>
+            <button class="cam-btn cam-btn-primary" id="nextStepBtn" onclick="goNextStep()" style="display:none;">
+              Next step
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="cam-viewport cam-h" id="camViewport">
+          <div class="progress-overlay">
+            <div class="prog-pill">
+              <div class="cam-dot scanning" style="width:7px;height:7px;"></div>
+              <span class="prog-pill-txt" id="progTxt">Detecting face...</span>
+            </div>
+          </div>
+
+          <div class="face-frame-wrap">
+            <div class="face-oval fo-scanning" id="faceOval"></div>
+            <div class="scan-line" id="scanLine"></div>
+
+            <svg class="face-silhouette" width="160" height="200" viewBox="0 0 160 200" fill="none">
+              <ellipse cx="80" cy="75" rx="48" ry="58" fill="white"/>
+              <ellipse cx="80" cy="180" rx="70" ry="40" fill="white"/>
+              <circle cx="62" cy="68" r="7" fill="#0d0d1a"/>
+              <circle cx="98" cy="68" r="7" fill="#0d0d1a"/>
+              <path d="M68 95 Q80 105 92 95" stroke="#0d0d1a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            </svg>
+
+            <div class="corner c-tl corner-scanning" id="ctlc"></div>
+            <div class="corner c-tr corner-scanning" id="ctrc"></div>
+            <div class="corner c-bl corner-scanning" id="cblc"></div>
+            <div class="corner c-br corner-scanning" id="cbrc"></div>
+          </div>
+
+          <div class="cam-overlay-text">
+            <div class="cot-main" id="cotMain">Look directly at the camera</div>
+            <div class="cot-sub" id="cotSub">Front angle — stay still</div>
+          </div>
+        </div>
+
+        <div class="cam-footer">
+          <div class="capture-strip" id="captureStrip">
+            <div class="thumb th-idle" id="th0">
+              <div>
+                <div class="th-label">Front</div>
+              </div>
+            </div>
+            <div class="thumb th-idle" id="th1">
+              <div>
+                <div class="th-label">Left</div>
+              </div>
+            </div>
+            <div class="thumb th-idle" id="th2">
+              <div>
+                <div class="th-label">Right</div>
+              </div>
+            </div>
+            <span style="font-size:12px;color:var(--color-text-secondary);margin-left:4px;" id="captureCount">0 / 3 captured</span>
+          </div>
+          <button class="cap-main-btn" id="captureBtn" onclick="captureAngle()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="white" stroke-width="1.4"/><circle cx="8" cy="8" r="2.5" fill="white"/></svg>
+            Capture
+          </button>
+        </div>
+      </div>
+
+      <div class="bottom-row">
+        <div class="card">
+          <div class="card-head"><div class="card-title">Angle guide</div><span style="font-size:12px;color:var(--color-text-secondary);" id="anglesDoneLabel">0 of 3 complete</span></div>
+          <div class="card-body">
+            <div class="angle-grid">
+              <div class="angle-card ac-idle" id="ag0">
+                <div class="angle-icon">
+                  <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+                    <ellipse cx="18" cy="14" rx="8" ry="10" stroke="#888" stroke-width="1.5"/>
+                    <ellipse cx="18" cy="30" rx="13" ry="6" stroke="#888" stroke-width="1.5"/>
+                    <circle cx="14" cy="12" r="1.5" fill="#888"/>
+                    <circle cx="22" cy="12" r="1.5" fill="#888"/>
+                  </svg>
+                </div>
+                <div class="angle-label">Front</div>
+                <div class="angle-status" id="as0">Pending</div>
+              </div>
+              <div class="angle-card ac-idle" id="ag1">
+                <div class="angle-icon">
+                  <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+                    <ellipse cx="16" cy="14" rx="7" ry="10" stroke="#888" stroke-width="1.5"/>
+                    <ellipse cx="17" cy="30" rx="12" ry="6" stroke="#888" stroke-width="1.5"/>
+                    <circle cx="13" cy="12" r="1.5" fill="#888"/>
+                    <path d="M8 14 Q14 10 16 8" stroke="#888" stroke-width="1.2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="angle-label">Left turn</div>
+                <div class="angle-status" id="as1">Pending</div>
+              </div>
+              <div class="angle-card ac-idle" id="ag2">
+                <div class="angle-icon">
+                  <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+                    <ellipse cx="20" cy="14" rx="7" ry="10" stroke="#888" stroke-width="1.5"/>
+                    <ellipse cx="19" cy="30" rx="12" ry="6" stroke="#888" stroke-width="1.5"/>
+                    <circle cx="23" cy="12" r="1.5" fill="#888"/>
+                    <path d="M28 14 Q22 10 20 8" stroke="#888" stroke-width="1.2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="angle-label">Right turn</div>
+                <div class="angle-status" id="as2">Pending</div>
+              </div>
+            </div>
+
+            <div class="confirm-box" id="confirmBox">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;"><circle cx="9" cy="9" r="8" fill="#1D9E75"/><path d="M5 9l3 3 5-5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="confirm-text">All 3 angles captured! Ready to proceed to model training.</div>
+              <button class="confirm-btn" onclick="goNextStep()">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">System requirements</div></div>
+          <div class="card-body">
+            <div class="req-list">
+              <div class="req-item ri-ok">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0F6E56" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Camera detected &amp; active
+              </div>
+              <div class="req-item ri-ok">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0F6E56" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Lighting: good
+              </div>
+              <div class="req-item ri-ok">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0F6E56" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Face detected in frame
+              </div>
+              <div class="req-item ri-warn" id="reqGlasses">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#BA7517" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#BA7517" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Glasses detected — recommended to remove
+              </div>
+              <div class="req-item ri-ok">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0F6E56" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Face centered in frame
+              </div>
+              <div class="req-item ri-ok">
+                <svg class="ri-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0F6E56" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Secure connection active
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const angles = [
+    {label:'Front', instruction:'Look directly at the camera', sub:'Front angle — stay still'},
+    {label:'Left turn', instruction:'Slowly turn your head to the left', sub:'Left angle — hold still'},
+    {label:'Right turn', instruction:'Slowly turn your head to the right', sub:'Right angle — hold still'},
+  ];
+
+  let captured = 0;
+  let currentAngle = 0;
+  let isCapturing = false;
+
+  function updateAngleUI(){
+    angles.forEach((a,i)=>{
+      const card = document.getElementById('ag'+i);
+      const status = document.getElementById('as'+i);
+      const thumb = document.getElementById('th'+i);
+      if(i < captured){
+        card.className='angle-card ac-done';
+        card.querySelectorAll('ellipse,circle,path').forEach(el=>{el.setAttribute('stroke','#1D9E75');el.setAttribute('fill',el.getAttribute('fill')==='#888'?'#1D9E75':el.getAttribute('fill'));});
+        status.textContent='Captured';
+        thumb.className='thumb th-done';
+        thumb.innerHTML='<div><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" fill="#1D9E75"/><path d="M5 9l3 3 5-5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="th-label" style="color:#085041;">'+a.label+'</div></div>';
+      } else if(i===currentAngle && captured<3){
+        card.className='angle-card ac-active';
+        status.textContent='Active';
+        thumb.className='thumb th-active';
+        thumb.innerHTML='<div><div class="th-label">'+a.label+'</div></div>';
+      } else {
+        card.className='angle-card ac-idle';
+        status.textContent='Pending';
+        thumb.className='thumb th-idle';
+        thumb.innerHTML='<div><div class="th-label">'+a.label+'</div></div>';
+      }
+    });
+    document.getElementById('captureCount').textContent=captured+' / 3 captured';
+    document.getElementById('anglesDoneLabel').textContent=captured+' of 3 complete';
+    if(currentAngle < 3 && captured < 3){
+      document.getElementById('cotMain').textContent=angles[currentAngle].instruction;
+      document.getElementById('cotSub').textContent=angles[currentAngle].sub;
+    }
+  }
+
+  function captureAngle(){
+    if(isCapturing || captured >= 3) return;
+    isCapturing = true;
+    const btn = document.getElementById('captureBtn');
+    btn.disabled = true;
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="white" stroke-width="1.4" stroke-dasharray="3 2"><animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="0.8s" repeatCount="indefinite"/></circle></svg> Capturing...';
+    document.getElementById('progTxt').textContent='Processing angle '+angles[currentAngle].label+'...';
+
+    setTimeout(()=>{
+      captured++;
+      currentAngle = captured;
+      isCapturing = false;
+      updateAngleUI();
+      btn.disabled = false;
+
+      if(captured >= 3){
+        document.getElementById('scanLine').classList.add('hidden');
+        document.getElementById('faceOval').className='face-oval fo-success';
+        ['ctlc','ctrc','cblc','cbrc'].forEach(id=>document.getElementById(id).className='corner '+id.replace('ctlc','c-tl').replace('ctrc','c-tr').replace('cblc','c-bl').replace('cbrc','c-br')+' corner-scanning');
+        document.getElementById('camDot').classList.remove('scanning');
+        document.getElementById('camDot').style.background='#1D9E75';
+        document.getElementById('camStatusLabel').textContent='All angles captured successfully';
+        document.getElementById('progTxt').textContent='All 3 angles captured';
+        document.getElementById('cotMain').textContent='Face enrollment complete!';
+        document.getElementById('cotSub').textContent='All angles successfully recorded';
+        document.getElementById('confirmBox').classList.add('show');
+        document.getElementById('nextStepBtn').style.display='flex';
+        btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.3"/><path d="M5 8l2.5 2.5 4-4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> All captured';
+        btn.disabled = true;
+        btn.style.background='#0F6E56';
+      } else {
+        document.getElementById('progTxt').textContent='Ready for next angle...';
+        btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="white" stroke-width="1.4"/><circle cx="8" cy="8" r="2.5" fill="white"/></svg> Capture';
+      }
+    }, 1800);
+  }
+
+  function resetCapture(){
+    captured=0; currentAngle=0; isCapturing=false;
+    document.getElementById('scanLine').classList.remove('hidden');
+    document.getElementById('faceOval').className='face-oval fo-scanning';
+    document.getElementById('camDot').classList.add('scanning');
+    document.getElementById('camDot').style.background='';
+    document.getElementById('camStatusLabel').textContent='Scanning — look straight ahead';
+    document.getElementById('progTxt').textContent='Detecting face...';
+    document.getElementById('cotMain').textContent='Look directly at the camera';
+    document.getElementById('cotSub').textContent='Front angle — stay still';
+    document.getElementById('confirmBox').classList.remove('show');
+    document.getElementById('nextStepBtn').style.display='none';
+    const btn=document.getElementById('captureBtn');
+    btn.disabled=false; btn.style.background='';
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="white" stroke-width="1.4"/><circle cx="8" cy="8" r="2.5" fill="white"/></svg> Capture';
+    updateAngleUI();
+  }
+
+  function goNextStep(){
+    alert('Proceeding to Step 3: AI Model Training (Demo only)');
+  }
+
+  updateAngleUI();
+</script>
