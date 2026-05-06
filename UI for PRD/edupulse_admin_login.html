@@ -1,0 +1,445 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  .page{min-height:100vh;display:flex;font-family:'DM Sans',sans-serif;background:var(--color-background-tertiary);}
+
+  .left-panel{
+    width:400px;flex-shrink:0;
+    background:#26215C;
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:2.5rem;position:relative;overflow:hidden;
+  }
+
+  .deco1{position:absolute;width:300px;height:300px;border-radius:50%;border:0.5px solid rgba(127,119,221,0.1);top:-100px;right:-100px;pointer-events:none;}
+  .deco2{position:absolute;width:180px;height:180px;border-radius:50%;border:0.5px solid rgba(127,119,221,0.08);top:-40px;right:-40px;pointer-events:none;}
+  .deco3{position:absolute;width:220px;height:220px;border-radius:50%;border:0.5px solid rgba(127,119,221,0.07);bottom:-70px;left:-70px;pointer-events:none;}
+  .deco4{position:absolute;width:100px;height:100px;border-radius:50%;border:0.5px solid rgba(127,119,221,0.06);bottom:100px;right:30px;pointer-events:none;}
+
+  .lp-top{display:flex;align-items:center;gap:12px;position:relative;}
+  .logo-mark{width:42px;height:42px;border-radius:12px;background:#7F77DD;display:flex;align-items:center;justify-content:center;}
+  .logo-mark svg{width:24px;height:24px;}
+  .brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;letter-spacing:-0.3px;}
+  .brand-sub{font-size:11px;color:#CECBF6;opacity:0.7;letter-spacing:0.5px;text-transform:uppercase;margin-top:1px;}
+
+  .lp-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.5rem;padding:2rem 0;position:relative;}
+
+  .console-icon{width:76px;height:76px;border-radius:18px;background:rgba(127,119,221,0.15);border:0.5px solid rgba(127,119,221,0.3);display:flex;align-items:center;justify-content:center;}
+  .console-icon svg{width:40px;height:40px;}
+
+  .lp-heading{font-family:'Playfair Display',serif;font-size:25px;font-weight:500;color:#fff;line-height:1.35;}
+  .lp-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;margin-top:8px;}
+
+  .access-levels{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+  .al-row{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:10px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(127,119,221,0.2);}
+  .al-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .al-icon svg{width:14px;height:14px;}
+  .al-purple{background:rgba(127,119,221,0.25);}
+  .al-teal{background:rgba(29,158,117,0.2);}
+  .al-amber{background:rgba(239,159,39,0.2);}
+  .al-text{font-size:12px;color:rgba(255,255,255,0.65);}
+  .al-badge{margin-left:auto;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;}
+  .alb-full{background:rgba(127,119,221,0.25);color:#CECBF6;}
+  .alb-limited{background:rgba(29,158,117,0.2);color:#9FE1CB;}
+  .alb-view{background:rgba(239,159,39,0.2);color:#FAC775;}
+
+  .lp-bottom{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:0.3px;position:relative;}
+
+  .right-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;}
+
+  .form-box{width:100%;max-width:400px;}
+
+  .form-header{margin-bottom:2rem;}
+  .form-title{font-size:22px;font-weight:500;color:var(--color-text-primary);}
+  .form-sub{font-size:13px;color:var(--color-text-secondary);margin-top:4px;}
+
+  .step-bar{display:flex;align-items:center;gap:6px;margin-bottom:2rem;}
+  .stp{display:flex;align-items:center;gap:6px;font-size:12px;flex-shrink:0;}
+  .stp-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;transition:all 0.2s;}
+  .stp-active .stp-num{background:#534AB7;color:#fff;}
+  .stp-done .stp-num{background:#1D9E75;color:#fff;}
+  .stp-idle .stp-num{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);}
+  .stp-label{color:var(--color-text-secondary);}
+  .stp-active .stp-label{color:var(--color-text-primary);font-weight:500;}
+  .stp-conn{flex:1;height:0.5px;background:var(--color-border-tertiary);}
+
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  label{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.5px;text-transform:uppercase;}
+
+  .input-wrap{position:relative;display:flex;align-items:center;}
+  .ico{position:absolute;left:11px;width:15px;height:15px;color:var(--color-text-secondary);opacity:0.65;pointer-events:none;}
+  .eye-btn{position:absolute;right:11px;background:none;border:none;cursor:pointer;opacity:0.45;transition:opacity 0.15s;padding:0;display:flex;align-items:center;color:var(--color-text-secondary);}
+  .eye-btn:hover{opacity:1;}
+
+  input[type=text],input[type=email],input[type=password]{
+    width:100%;height:42px;
+    border:0.5px solid var(--color-border-secondary);
+    border-radius:var(--border-radius-md);
+    background:var(--color-background-primary);
+    color:var(--color-text-primary);
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;padding:0 38px 0 36px;
+    outline:none;transition:border-color 0.15s;
+  }
+  input:focus{border-color:#7F77DD;box-shadow:0 0 0 3px rgba(127,119,221,0.12);}
+
+  .info-box{border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;display:flex;gap:9px;align-items:flex-start;margin-bottom:1.25rem;}
+  .info-purple{background:#EEEDFE;border:0.5px solid #AFA9EC;color:#3C3489;}
+  .info-box svg{flex-shrink:0;margin-top:1px;}
+
+  .err-msg{display:none;background:#FCEBEB;border:0.5px solid #F09595;color:#791F1F;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;margin-bottom:14px;align-items:center;gap:8px;}
+  .err-msg.show{display:flex;}
+
+  .row-between{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;margin-top:4px;}
+  .remember-wrap{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;}
+  .chk{width:16px;height:16px;border:1.5px solid var(--color-border-secondary);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:var(--color-background-primary);flex-shrink:0;}
+  .chk.on{background:#534AB7;border-color:#534AB7;}
+  .remember-label{font-size:13px;color:var(--color-text-secondary);}
+  .forgot-link{font-size:13px;color:#534AB7;text-decoration:none;font-weight:500;}
+
+  .submit-btn{width:100%;height:44px;background:#534AB7;color:#fff;border:none;border-radius:var(--border-radius-md);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background 0.15s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+  .submit-btn:hover{background:#3C3489;}
+  .submit-btn:active{transform:scale(0.99);}
+
+  .back-btn{width:100%;height:40px;margin-top:8px;background:transparent;color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .back-btn:hover{background:var(--color-background-secondary);}
+
+  .divider-row{display:flex;align-items:center;gap:10px;margin:1.25rem 0;}
+  .divider-line{flex:1;height:0.5px;background:var(--color-border-tertiary);}
+  .divider-text{font-size:12px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.3px;}
+
+  .sso-btn{width:100%;height:40px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background 0.15s;}
+  .sso-btn:hover{background:var(--color-background-secondary);}
+
+  .contact-row{text-align:center;margin-top:1.25rem;font-size:13px;color:var(--color-text-secondary);}
+  .contact-row a{color:#534AB7;text-decoration:none;font-weight:500;}
+
+  .otp-row{display:flex;gap:10px;justify-content:space-between;}
+  .otp-box{width:48px;height:54px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-family:'DM Sans',sans-serif;font-size:20px;font-weight:500;text-align:center;outline:none;transition:border-color 0.15s;caret-color:transparent;}
+  .otp-box:focus{border-color:#7F77DD;box-shadow:0 0 0 3px rgba(127,119,221,0.12);}
+
+  .resend-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;margin-bottom:14px;}
+  .resend-label{font-size:12px;color:var(--color-text-secondary);}
+  .resend-btn{font-size:12px;color:#534AB7;font-weight:500;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0;}
+  .resend-btn:hover{text-decoration:underline;}
+
+  .step1,.step2,.step3{display:none;}
+  .step1.active,.step2.active,.step3.active{display:block;}
+
+  .success-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:2rem 0;}
+  .success-icon{width:60px;height:60px;border-radius:50%;background:#EAF3DE;border:0.5px solid #97C459;display:flex;align-items:center;justify-content:center;}
+
+  @media(max-width:700px){
+    .page{flex-direction:column;}
+    .left-panel{width:100%;padding:1.5rem;}
+    .lp-mid{padding:1.25rem 0;gap:1rem;}
+    .access-levels{display:none;}
+    .right-panel{padding:1.5rem;}
+  }
+</style>
+
+<div class="page">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">EduPulse admin console login</h2>
+
+  <div class="left-panel">
+    <div class="deco1"></div><div class="deco2"></div><div class="deco3"></div><div class="deco4"></div>
+
+    <div class="lp-top">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 3L2 8l10 5 10-5-10-5z" fill="white"/>
+          <path d="M2 16l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M2 12l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">EduPulse</div>
+        <div class="brand-sub">Admin Console</div>
+      </div>
+    </div>
+
+    <div class="lp-mid">
+      <div class="console-icon">
+        <svg viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="14" r="6" fill="#CECBF6" opacity="0.9"/>
+          <path d="M8 32c0-6.627 5.373-9 12-9s12 2.373 12 9" fill="#CECBF6" opacity="0.5"/>
+          <circle cx="30" cy="12" r="3.5" fill="#CECBF6" opacity="0.5"/>
+          <circle cx="10" cy="12" r="3.5" fill="#CECBF6" opacity="0.5"/>
+          <path d="M33.5 25c0-3.5-2-5-6-5" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <path d="M6.5 25c0-3.5 2-5 6-5" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="lp-heading">Full system administration access</div>
+        <div class="lp-desc">This portal is restricted to authorized system administrators only. All sign-in activity is logged and monitored.</div>
+      </div>
+      <div class="access-levels">
+        <div class="al-row">
+          <div class="al-icon al-purple">
+            <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="#AFA9EC" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="#AFA9EC" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="#AFA9EC" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="#AFA9EC" stroke-width="1.3"/></svg>
+          </div>
+          <span class="al-text">System Administrator</span>
+          <span class="al-badge alb-full">Full access</span>
+        </div>
+        <div class="al-row">
+          <div class="al-icon al-teal">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 5v4c0 4 2.5 6 6 7 3.5-1 6-3 6-7V5L8 2z" stroke="#5DCAA5" stroke-width="1.3"/></svg>
+          </div>
+          <span class="al-text">Department Head</span>
+          <span class="al-badge alb-limited">Limited</span>
+        </div>
+        <div class="al-row">
+          <div class="al-icon al-amber">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z" stroke="#EF9F27" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="#EF9F27" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <span class="al-text">Read-only Auditor</span>
+          <span class="al-badge alb-view">View only</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-bottom">EduPulse © 2026 · Unauthorized access is strictly prohibited</div>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-box">
+
+      <div class="form-header">
+        <div class="form-title">Admin sign in</div>
+        <div class="form-sub">3-step verification required for all administrators</div>
+      </div>
+
+      <div class="step-bar">
+        <div class="stp stp-active" id="si1">
+          <div class="stp-num">1</div>
+          <span class="stp-label">Identity</span>
+        </div>
+        <div class="stp-conn"></div>
+        <div class="stp stp-idle" id="si2">
+          <div class="stp-num">2</div>
+          <span class="stp-label">Password</span>
+        </div>
+        <div class="stp-conn"></div>
+        <div class="stp stp-idle" id="si3">
+          <div class="stp-num">3</div>
+          <span class="stp-label">2FA verify</span>
+        </div>
+      </div>
+
+      <!-- STEP 1 — Identity -->
+      <div class="step1 active" id="step1">
+        <div class="info-box info-purple">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#534AB7" stroke-width="1.3"/><path d="M8 7v4M8 5.5v.5" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Enter your university-issued admin email and Admin ID to proceed.
+        </div>
+        <div class="err-msg" id="err1">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#A32D2D" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Admin ID or email not recognized. Please try again.
+        </div>
+        <div class="field">
+          <label>Admin email</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 5.5l6 4 6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="email" id="adminEmail" placeholder="admin@university.edu"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Admin ID</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 6h5M5.5 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="text" id="adminId" placeholder="e.g. ADM-0001"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Role</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 13.5c0-2.761 2.239-4 5-4s5 1.239 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="text" id="adminRole" placeholder="e.g. System Administrator"/>
+          </div>
+        </div>
+        <button class="submit-btn" onclick="goStep2()">
+          Continue
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="divider-row"><div class="divider-line"></div><div class="divider-text">or</div><div class="divider-line"></div></div>
+        <button class="sso-btn" onclick="alert('SSO login (demo)')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5.5" height="5.5" rx="1" fill="#534AB7"/><rect x="8.5" y="2" width="5.5" height="5.5" rx="1" fill="#534AB7" opacity="0.6"/><rect x="2" y="8.5" width="5.5" height="5.5" rx="1" fill="#534AB7" opacity="0.6"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" fill="#534AB7" opacity="0.3"/></svg>
+          Continue with campus SSO
+        </button>
+        <div class="contact-row">Need admin access? <a href="#">Contact IT department</a></div>
+      </div>
+
+      <!-- STEP 2 — Password -->
+      <div class="step2" id="step2">
+        <div class="info-box info-purple">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="#534AB7" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Enter your secure admin password. Passwords are case-sensitive.
+        </div>
+        <div class="err-msg" id="err2">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#A32D2D" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Incorrect password. 3 attempts remaining before lockout.
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="10.5" r="1" fill="currentColor"/></svg>
+            <input type="password" id="adminPwd" placeholder="Enter your password"/>
+            <button class="eye-btn" id="eyeBtn" onclick="toggleEye()">
+              <svg id="eyeIco" width="16" height="16" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="8" rx="5.5" ry="3.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm identity — re-enter admin ID</label>
+          <div class="input-wrap">
+            <svg class="ico" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 6h5M5.5 8.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="text" id="confirmId" placeholder="Re-enter Admin ID"/>
+          </div>
+        </div>
+        <div class="row-between">
+          <div class="remember-wrap" onclick="toggleCheck()">
+            <div class="chk" id="chkBox"></div>
+            <span class="remember-label">Trust this device for 30 days</span>
+          </div>
+          <a href="#" class="forgot-link">Reset password</a>
+        </div>
+        <button class="submit-btn" onclick="goStep3()">
+          Continue to 2FA
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="back-btn" onclick="goBack(1)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+      </div>
+
+      <!-- STEP 3 — 2FA -->
+      <div class="step3" id="step3">
+        <div class="info-box info-purple">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2.5 4v4.5C2.5 12.5 5 15.3 8 16c3-0.7 5.5-3.5 5.5-7.5V4L8 1.5z" stroke="#534AB7" stroke-width="1.3"/><path d="M6 8l1.5 1.5 3-3" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Enter the 6-digit code from your authenticator app (Google Authenticator or Microsoft Authenticator).
+        </div>
+        <div class="err-msg" id="err3">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#A32D2D" stroke-width="1.3"/><path d="M8 5v3.5M8 10.5v.5" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Invalid code. Codes expire every 30 seconds — please try again.
+        </div>
+        <div class="field">
+          <label>Authenticator code</label>
+          <div class="otp-row" id="otpRow"></div>
+        </div>
+        <div class="resend-row">
+          <span class="resend-label" id="timerLabel">Code expires in <span id="timer">30</span>s</span>
+          <button class="resend-btn" onclick="alert('New code sent (demo)')">Use backup code</button>
+        </div>
+        <button class="submit-btn" onclick="handleLogin()">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2.5 4v4.5C2.5 12.5 5 15.3 8 16c3-0.7 5.5-3.5 5.5-7.5V4L8 1.5z" stroke="white" stroke-width="1.4"/><path d="M6 8l1.5 1.5 3-3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Verify &amp; access admin console
+        </button>
+        <button class="back-btn" onclick="goBack(2)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <div class="contact-row" style="margin-top:1rem;">Lost access to authenticator? <a href="#">Contact IT support</a></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let checked = false, eyeOpen = false, timerInterval = null, otpVals = ['','','','','',''];
+
+  function markDone(id){ const el=document.getElementById(id); el.className='stp stp-done'; el.querySelector('.stp-num').innerHTML='<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  function markActive(id){ const el=document.getElementById(id); el.className='stp stp-active'; el.querySelector('.stp-num').textContent=id.replace('si',''); }
+  function markIdle(id){ const el=document.getElementById(id); el.className='stp stp-idle'; el.querySelector('.stp-num').textContent=id.replace('si',''); }
+
+  function showStep(n){
+    ['step1','step2','step3'].forEach((s,i)=>{
+      document.getElementById(s).className='step'+(n===i+1?' active':'')+(i===0?' step1':i===1?' step2':' step3');
+    });
+  }
+
+  function goStep2(){
+    const email=document.getElementById('adminEmail').value.trim();
+    const id=document.getElementById('adminId').value.trim();
+    if(!email||!id){document.getElementById('err1').classList.add('show');return;}
+    document.getElementById('err1').classList.remove('show');
+    markDone('si1'); markActive('si2');
+    showStep(2);
+  }
+
+  function goStep3(){
+    const pwd=document.getElementById('adminPwd').value;
+    const cid=document.getElementById('confirmId').value.trim();
+    if(!pwd||!cid){document.getElementById('err2').classList.add('show');return;}
+    document.getElementById('err2').classList.remove('show');
+    markDone('si2'); markActive('si3');
+    showStep(3);
+    buildOTP();
+    startTimer();
+    setTimeout(()=>document.getElementById('otpRow').children[0].focus(),100);
+  }
+
+  function goBack(step){
+    if(step===1){markActive('si1');markIdle('si2');showStep(1);}
+    if(step===2){markActive('si2');markIdle('si3');showStep(2);clearInterval(timerInterval);}
+  }
+
+  function toggleEye(){
+    eyeOpen=!eyeOpen;
+    document.getElementById('adminPwd').type=eyeOpen?'text':'password';
+    document.getElementById('eyeIco').innerHTML=eyeOpen
+      ?'<ellipse cx="8" cy="8" rx="5.5" ry="3.5" stroke="currentColor" stroke-width="1.3"/><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>'
+      :'<ellipse cx="8" cy="8" rx="5.5" ry="3.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/>';
+  }
+
+  function toggleCheck(){
+    checked=!checked;
+    const b=document.getElementById('chkBox');
+    b.className='chk'+(checked?' on':'');
+    b.innerHTML=checked?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>':'';
+  }
+
+  function buildOTP(){
+    const row=document.getElementById('otpRow');
+    row.innerHTML='';
+    otpVals=['','','','','',''];
+    for(let i=0;i<6;i++){
+      const inp=document.createElement('input');
+      inp.type='text'; inp.maxLength=1; inp.className='otp-box';
+      inp.inputMode='numeric'; inp.dataset.idx=i;
+      inp.addEventListener('input',e=>{
+        const v=e.target.value.replace(/\D/g,'');
+        e.target.value=v; otpVals[i]=v;
+        if(v&&i<5) row.children[i+1].focus();
+      });
+      inp.addEventListener('keydown',e=>{
+        if(e.key==='Backspace'&&!e.target.value&&i>0){
+          otpVals[i-1]=''; row.children[i-1].value=''; row.children[i-1].focus();
+        }
+      });
+      row.appendChild(inp);
+    }
+  }
+
+  function startTimer(){
+    clearInterval(timerInterval);
+    let t=30;
+    document.getElementById('timer').textContent=t;
+    timerInterval=setInterval(()=>{
+      t--;
+      document.getElementById('timer').textContent=t;
+      if(t<=0){clearInterval(timerInterval);document.getElementById('timerLabel').textContent='Code expired — use backup code';}
+    },1000);
+  }
+
+  function handleLogin(){
+    const code=otpVals.join('');
+    if(code.length<6){document.getElementById('err3').classList.add('show');return;}
+    document.getElementById('err3').classList.remove('show');
+    clearInterval(timerInterval);
+    markDone('si3');
+    alert('Identity verified! Welcome to the Admin Console. (Demo only)');
+  }
+</script>
